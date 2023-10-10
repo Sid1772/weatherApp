@@ -1,0 +1,36 @@
+<div class="weatherContainer">
+    <div class="citySelector">
+        <span id="header">Selectionner votre ville</span>
+        <div class="dropdown">
+            <select #sCity (change)="changeCity(+sCity.value)" name="" id="">
+                <option [value]="city.id" *ngFor="let city of citiesData">{{city.nm}}</option>
+            </select>
+        </div>
+    </div>
+    <span *ngIf="fetchingData" class="loader"></span>
+    <ng-container *ngIf="!fetchingData">
+        <div class="cityName">{{selectedCity}}</div>
+    <div class="currentWeather">
+        <div id="currentIcon" class='wi' [class]="currentWeather.id"></div>
+        <div id="currentTemp" class='wi'>{{currentWeather.temp}}</div>
+    </div>
+    <div class="forecastWeather">
+        <div class="days">
+            <div *ngFor="let weather of forecastWeather" class="weatherData">{{weather.date|date:'EEEE'}}</div>
+        </div>
+        <div class="weathers">
+            <div class="dayWeather" *ngFor="let weather of forecastWeather">
+            
+                <div class="forW">
+                    <div id="currentIcon" class='wi' [class]="weather.id"></div>
+                <div id="">{{weather.min}}</div>
+                <div id="">{{weather.max}}</div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+    </ng-container>
+    
+</div>
