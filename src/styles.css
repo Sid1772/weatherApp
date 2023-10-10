@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+html{
+    font-size: 1.667vw;
+}
+
+body{
+    height: 100%;
+  background: #8e74c7;
+  color: white;
+  font-family: 'weathericons';
+}
