@@ -1,8 +1,8 @@
 <div class="weatherContainer">
     <div class="citySelector">
-        <span id="header">Selectionner votre ville</span>
+        <span id="header">{{title}}</span>
         <div class="dropdown">
-            <ng-select [items]="citiesData" bindLabel="nm" bindValue="id" [clearable]="dropdownProperties.clearable"
+            <ng-select id="cityDropdown" [items]="citiesData" bindLabel="nm" bindValue="id" [clearable]="dropdownProperties.clearable"
                 [searchable]="dropdownProperties.searchable" (change)="changeCity()"
                 [virtualScroll]="dropdownProperties.virtualScroll" [(ngModel)]="selectedCityId">
             </ng-select>

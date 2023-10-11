@@ -11,6 +11,7 @@ import { take } from 'rxjs/operators';
 export class WeatherComponent implements OnInit {
   selectedCity: string = '';
   selectedCityId: number = 0;
+  title="Sélectionner votre ville"
   currentWeather: any = {};
   fetchingData = true;
   dropdownProperties: any = {
@@ -51,7 +52,7 @@ export class WeatherComponent implements OnInit {
     this.getForecast(city);
   }
   getCurrentWeather({ lat, lon }: { lat: number; lon: number }) {
-    this.service.getCurrentWeather(lat, lon).subscribe((cw: any) => {
+    this.service.getCurrentWeatherData(lat, lon).subscribe((cw: any) => {
       this.currentWeather = {
         icon: cw.weather[0].icon,
         id: `wi-icon-` + cw.weather[0].id,
