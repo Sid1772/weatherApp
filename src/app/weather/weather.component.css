@@ -73,7 +73,7 @@ select {
 .weatherContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 1.5rem;
   padding: 0 2%;
 }
 .loader::after {
