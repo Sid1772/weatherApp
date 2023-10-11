@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Cities } from '../cities';
 import { WeatherService } from './weather.service';
-import { take } from 'rxjs/operators';
+import { catchError, take, tap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-weather',
@@ -38,7 +40,12 @@ export class WeatherComponent implements OnInit {
     this.getWeatherData(city);
   }
   getCitiesData() {
-    this.service.getCitiesData().subscribe((city: any) => {
+    this.service.getCitiesJSONData().pipe(tap((data)=>{
+      console.log(data)
+    }),
+    catchError((error)=>{console.log(error);throw new Error()})
+    ).subscribe((city: any) => {
+      console.log(city)
       this.citiesData = city;
       this.getWeatherData(this.citiesData[0]);
     });
@@ -51,8 +58,25 @@ export class WeatherComponent implements OnInit {
     this.getCurrentWeather(city);
     this.getForecast(city);
   }
+  handleError<T>(err:any){
+    return (error: HttpErrorResponse): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      const message = `Internal Server Error ${err}"`;
+      this.fetchingData=false
+      // TODO: better job of transforming error for user consumption
+      throw new Error(`${err} failed: ${message}`);
+    };
+  }
   getCurrentWeather({ lat, lon }: { lat: number; lon: number }) {
-    this.service.getCurrentWeatherData(lat, lon).subscribe((cw: any) => {
+    console.log("here")
+    this.service.getCurrentWeatherData(lat, lon).pipe(
+      tap((data)=>{console.log("current weather data",data)}),
+      catchError(this.handleError("Unable to get data"))
+    ).subscribe((cw: any) => {
+      console.log(cw)
       this.currentWeather = {
         icon: cw.weather[0].icon,
         id: `wi-icon-` + cw.weather[0].id,
@@ -61,7 +85,11 @@ export class WeatherComponent implements OnInit {
     });
   }
   getForecast({ lat, lon }: { lat: number; lon: number }) {
-    this.service.getWeatherForecast(lat, lon).subscribe((fw: any) => {
+    this.service.getWeatherForecast(lat, lon)
+    .pipe(
+      catchError(this.handleError("Unable to get Data"))
+    ).
+    subscribe((fw: any) => {
       console.log(fw);
       this.setForecastWeather(fw.list);
       this.fetchingData = false;

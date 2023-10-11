@@ -92,6 +92,78 @@ describe("WeatherComponent",()=>{
     }
     ,
     {
+      "dt": 1697058000,
+      "main": {
+        "temp": 20.13,
+        "feels_like": 19.69,
+        "temp_min": 18.44,
+        "temp_max": 20.13,
+        "pressure": 1014,
+        "sea_level": 1014,
+        "grnd_level": 1014,
+        "humidity": 57,
+        "temp_kf": 1.69
+      },
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04n"
+        }
+      ],
+      "clouds": {
+        "all": 100
+      },
+      "wind": {
+        "speed": 4.17,
+        "deg": 236,
+        "gust": 10.63
+      },
+      "visibility": 10000,
+      "pop": 0,
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2023-10-11 21:00:00"
+    },
+    {
+      "dt": 1697090400,
+      "main": {
+        "temp": 17.06,
+        "feels_like": 16.73,
+        "temp_min": 17.06,
+        "temp_max": 17.06,
+        "pressure": 1014,
+        "sea_level": 1014,
+        "grnd_level": 1014,
+        "humidity": 73,
+        "temp_kf": 0
+      },
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04n"
+        }
+      ],
+      "clouds": {
+        "all": 100
+      },
+      "wind": {
+        "speed": 3.21,
+        "deg": 212,
+        "gust": 7.45
+      },
+      "visibility": 10000,
+      "pop": 0.27,
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2023-10-12 06:00:00"
+    },
+    {
       "dt": 1697090400,
       "main": {
         "temp": 17.06,
@@ -199,6 +271,42 @@ describe("WeatherComponent",()=>{
       },
       "dt_txt": "2023-10-14 06:00:00"
     },
+    {
+      "dt": 1697263200,
+      "main": {
+        "temp": 16.92,
+        "feels_like": 16.47,
+        "temp_min": 16.92,
+        "temp_max": 16.92,
+        "pressure": 1016,
+        "sea_level": 1016,
+        "grnd_level": 979,
+        "humidity": 69,
+        "temp_kf": 0
+      },
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04n"
+        }
+      ],
+      "clouds": {
+        "all": 100
+      },
+      "wind": {
+        "speed": 5.06,
+        "deg": 247,
+        "gust": 10.91
+      },
+      "visibility": 10000,
+      "pop": 0.01,
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2023-10-14 06:00:00"
+    },
   ]
   let weatherCheckArr=[// [object Object] 
   {
@@ -227,7 +335,9 @@ describe("WeatherComponent",()=>{
   let fakeServiceMock:any
   beforeEach(async () => {
     fakeServiceMock = {
-      getCurrentWeatherData: jest.fn()
+      getCurrentWeatherData: jest.fn(),
+      getCitiesJSONData:jest.fn(),
+      getWeatherForecast:jest.fn()
     }
     await TestBed.configureTestingModule({
       declarations: [WeatherComponent],
@@ -236,6 +346,9 @@ describe("WeatherComponent",()=>{
         NgSelectModule,
         FormsModule
       ],
+      providers:[
+        {provide:WeatherService,useValue:fakeServiceMock}
+      ]
     }).compileComponents();
   });
   it('should create the app', () => {
@@ -246,8 +359,56 @@ describe("WeatherComponent",()=>{
   beforeEach(() => {
     fixture = TestBed.createComponent(WeatherComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
+  it("should get current weather data",(done)=>{
+    let data={
+      "id":3038789,
+      "nm":"Abbeville",
+      "lat":50.099998,
+      "lon":1.83333
+    }
+    let checkData={
+      "coord": {
+          "lon": 1.8333,
+          "lat": 50.1
+      },
+      "weather": [
+          {
+              "id": 804,
+              "main": "Clouds",
+              "description": "overcast clouds",
+              "icon": "04n"
+          }
+      ],
+      "main": {
+          "temp": 20.6,
+          
+      },  
+  }
+  let verifyData={
+    icon:"04n",
+    id:"wi-icon-804",
+    temp:20.6
+  }
+   fakeServiceMock.getCurrentWeatherData.mockReturnValue(of(checkData))
+    component.getCurrentWeather(data)
+    setTimeout(()=>{done()},2000)
+    expect(component.currentWeather).toEqual(verifyData)
+
+
+  })
+  it("should call get cities",()=>{
+    let data=[{
+      "id":3038789,
+      "nm":"Abbeville",
+      "lat":50.099998,
+      "lon":1.83333
+    }]
+    const spy=jest.spyOn(fakeServiceMock,"getCitiesJSONData").mockReturnValue(of(data))
+    const spy2=fakeServiceMock.getCitiesJSONData.mockReturnValue(of(true))
+    component.getCitiesData()
+    expect(spy2).toBeCalled()
+  })
   it("should have title",()=>{
     expect(component.title).toEqual("Sélectionner votre ville")
   })
@@ -279,7 +440,8 @@ describe("WeatherComponent",()=>{
   })
   it("should call change city from init",()=>{
     let myFunc=jest.spyOn(component,"getCitiesData")
-    component.ngOnInit()
+    const spy=jest.spyOn(fakeServiceMock,"getCitiesJSONData").mockReturnValue(of([]))
+    fixture.detectChanges()
     expect(myFunc).toBeCalledTimes(1)
   })
   it("get weather should call current weather",()=>{
@@ -290,6 +452,8 @@ describe("WeatherComponent",()=>{
       "lat":50.099998,
       "lon":1.83333
     }
+    const spy=jest.spyOn(fakeServiceMock,"getCurrentWeatherData").mockReturnValue(of(city))
+    const spy2=jest.spyOn(fakeServiceMock,"getWeatherForecast").mockReturnValue(of(city))
     component.getWeatherData(city)
     expect(myFunc).toBeCalledTimes(1)
     expect(myFunc).toBeCalledWith(city)
@@ -302,6 +466,8 @@ describe("WeatherComponent",()=>{
       "lat":50.099998,
       "lon":1.83333
     }
+    const spy=jest.spyOn(fakeServiceMock,"getCurrentWeatherData").mockReturnValue(of(city))
+    const spy2=jest.spyOn(fakeServiceMock,"getWeatherForecast").mockReturnValue(of(city))
     component.getWeatherData(city)
     expect(myFunc1).toBeCalledTimes(1)
     expect(myFunc1).toBeCalledWith(city)
@@ -313,6 +479,8 @@ describe("WeatherComponent",()=>{
       "lat":50.099998,
       "lon":1.83333
     }
+    const spy=jest.spyOn(fakeServiceMock,"getCurrentWeatherData").mockReturnValue(of(city))
+    const spy2=jest.spyOn(fakeServiceMock,"getWeatherForecast").mockReturnValue(of(city))
     component.getWeatherData(city)
     expect(component.selectedCity).toEqual(city.nm)
     expect(component.selectedCityId).toEqual(city.id)
