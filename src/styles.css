@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
-html {
-  font-size: 1.667vw;
-}
 
+html{
+  font-size: 20px;
+}
 body {
   height: 100%;
   background: #8e74c7;

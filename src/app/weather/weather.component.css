@@ -74,6 +74,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+  padding: 0 2%;
 }
 .loader::after {
   animation-delay: 1s;
