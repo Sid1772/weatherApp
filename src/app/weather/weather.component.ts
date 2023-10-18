@@ -36,17 +36,17 @@ export class WeatherComponent implements OnInit {
     this.getCitiesData();
   }
   changeCity(id:any) {
-    console.log(id)
+    
     let city = this.citiesData.filter((c) => c.id == id)[0];
     this.getWeatherData(city);
   }
   getCitiesData() {
     this.service.getCitiesJSONData().pipe(tap((data)=>{
-      console.log(data)
+      
     }),
     catchError((error)=>{console.log(error);throw new Error()})
     ).subscribe((city: any) => {
-      console.log(city)
+      
       this.citiesData = city;
       this.getWeatherData(this.citiesData[0]);
     });
@@ -72,12 +72,12 @@ export class WeatherComponent implements OnInit {
     };
   }
   getCurrentWeather({ lat, lon }: { lat: number; lon: number }) {
-    console.log("here")
+    
     this.service.getCurrentWeatherData(lat, lon).pipe(
       tap((data)=>{console.log("current weather data",data)}),
       catchError(this.handleError("Unable to get data"))
     ).subscribe((cw: any) => {
-      console.log(cw)
+      
       this.currentWeather = {
         icon: cw.weather[0].icon,
         id: `wi-icon-` + cw.weather[0].id,
@@ -91,7 +91,7 @@ export class WeatherComponent implements OnInit {
       catchError(this.handleError("Unable to get Data"))
     ).
     subscribe((fw: any) => {
-      console.log(fw);
+      
       this.setForecastWeather(fw.list);
       this.fetchingData = false;
     });
@@ -111,7 +111,7 @@ export class WeatherComponent implements OnInit {
         ? [...dateTimeData[date], dataTobePushed]
         : [dataTobePushed];
     });
-    console.log(dateTimeData);
+    
     let maxDataTimeData: any = [];
     for (let date of Object.keys(dateTimeData)) {
       let max = this.getMax(dateTimeData[date], 'max');
@@ -124,7 +124,7 @@ export class WeatherComponent implements OnInit {
         id: dateTimeData[date][0].id,
       });
     }
-    console.log(maxDataTimeData);
+    
     //For Getting next 3 days Data only
     this.forecastWeather = maxDataTimeData.slice(1, 4);
   }
