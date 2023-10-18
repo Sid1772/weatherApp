@@ -1,3 +1,13 @@
+
+## Introduction 
+ This is an Angular Application running on Angular 13.
+ You would need Angular CLI and node.js in your system to run this.
+ If you dont have either of them follow the Angular guide to install
+ `https://angular.io/guide/setup-local`.
+If you dont want to install you can run the application on
+    `https://weatherapp-31b62.web.app/`.
+
+## App Intro
 Weather App
 
 This is a simple weather app getting data from open source api `http://openweathermap.org/api`
@@ -7,8 +17,6 @@ We are using `HttpClientModule` for getting data in services.
 
 The main component is WeatherComponent in which we have our entire code.
 WeatherComponent is referenced inside AppComponent using selector <app-weather></app-weather>
-
-
 ## Approach :
  To Approach this problem i used a custom dropdown defined in dropown Component.
  I use @Input approach to transfer cities data to the dropdown where i map it into useful data and display it in the dropdown.
