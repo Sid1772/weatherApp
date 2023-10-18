@@ -1,0 +1,14 @@
+<div class="dropdownContainer">
+    <div (click)="toggleDropdown()" [class.closed]="!isDropdownOpen" [class.open]="isDropdownOpen" class="selector">{{value||"Select City"}}</div>
+    <div #menu [class.hide]="!isDropdownOpen" class="menu">
+        <div class="searchContainer"><input [(ngModel)]="searchValue" class="search" #keyword type="text" placeholder="Search" (keyup)="searchList(keyword.value)"></div>
+        
+        <div class="search-dropdown-item" *ngFor="let item of displayCityData" (click)="select(item)">
+            {{item.nm | titlecase}}
+          </div>
+          <div #loadButton id="button" class="button">Load More</div>
+          <div *ngIf="displayCityData.length<=0" class="search-dropdown-item">
+           <span>No Cities Found</span>
+          </div>
+    </div>
+</div>

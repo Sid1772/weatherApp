@@ -2,10 +2,7 @@
     <div class="citySelector">
         <span id="header">{{title}}</span>
         <div class="dropdown">
-            <ng-select id="cityDropdown" [items]="citiesData" bindLabel="nm" bindValue="id" [clearable]="dropdownProperties.clearable"
-                [searchable]="dropdownProperties.searchable" (change)="changeCity()"
-                [virtualScroll]="dropdownProperties.virtualScroll" [(ngModel)]="selectedCityId">
-            </ng-select>
+            <app-dropdown [data]="citiesData" (newCity)="changeCity($event)"></app-dropdown>
             <!-- <select #sCity (change)="changeCity(+sCity.value)" name="" id="">
                 <option >{{city.nm}}</option>
             </select> -->
@@ -13,22 +10,22 @@
     </div>
     <span *ngIf="fetchingData" class="loader"></span>
     <ng-container *ngIf="!fetchingData">
-        <div class="cityName">{{selectedCity}}</div>
+        <div class="cityName">{{selectedCity|uppercase}}</div>
         <div class="currentWeather">
             <div id="currentIcon" class='wi' [class]="currentWeather.id"></div>
-            <div id="currentTemp" class='wi'>{{currentWeather.temp}}</div>
+            <div id="currentTemp" class='wi'>{{currentWeather.temp}}&deg;</div>
         </div>
         <div class="forecastWeather">
             <div class="days">
-                <div *ngFor="let weather of forecastWeather" class="weatherData">{{weather.date|date:'EEE'}}</div>
+                <div *ngFor="let weather of forecastWeather" class="weatherData">{{weather.date|date:'EEE'|uppercase}}</div>
             </div>
             <div class="weathers">
                 <div class="dayWeather" *ngFor="let weather of forecastWeather">
 
                     <div class="forW">
                         <div id="currentIcon" class='wi' [class]="weather.id"></div>
-                        <div id="">{{weather.min}}</div>
-                        <div id="">{{weather.max}}</div>
+                        <div id="">{{weather.min}}&deg;</div>
+                        <div id="">{{weather.max}}&deg;</div>
                     </div>
 
                 </div>

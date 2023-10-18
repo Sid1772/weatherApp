@@ -35,8 +35,9 @@ export class WeatherComponent implements OnInit {
   ngOnInit(): void {
     this.getCitiesData();
   }
-  changeCity() {
-    let city = this.citiesData.filter((c) => c.id == this.selectedCityId)[0];
+  changeCity(id:any) {
+    console.log(id)
+    let city = this.citiesData.filter((c) => c.id == id)[0];
     this.getWeatherData(city);
   }
   getCitiesData() {

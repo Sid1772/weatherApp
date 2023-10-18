@@ -5,11 +5,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { WeatherComponent } from './weather/weather.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
     WeatherComponent,
     AppComponent,
+    DropdownComponent,
     
   ],
   imports: [

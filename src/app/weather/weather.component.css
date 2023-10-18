@@ -44,6 +44,13 @@ body {
 .forW #currentIcon {
   font-size: 1.5rem;
 }
+.forW{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center
+  ;
+}
 .loader {
   width: 2.5rem;
   height: 2.5rem;
@@ -51,6 +58,7 @@ body {
   position: relative;
   left: 50%;
   top: 100%;
+  transform: translate(-50%);
 }
 .loader::after,
 .loader::before {
@@ -75,10 +83,14 @@ select {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 0 2%;
+  padding: 2% 2%;
 }
 .loader::after {
   animation-delay: 1s;
+}
+.citySelector{
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes animloader {
