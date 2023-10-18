@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild,AfterViewInit,Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild,AfterViewInit,Output,EventEmitter, HostListener } from '@angular/core';
 import { Cities } from '../cities';
 
 
@@ -17,18 +17,29 @@ searchValue=""
 citiesData:Array<Cities>=[]
 displayCityData:Array<Cities>=[]
 @Input('data') data:Array<Cities>=[]
+@HostListener("window:click",['$event.target'])
+getClickListener(e:any){
+  if(e?.closest(".dropdownContainer")){
+    return
+  } 
+  else{
+    this.isDropdownOpen=false;
+    this.scrollToTop()
+  }
+}
 observer!:IntersectionObserver
   constructor() {
-    //A little jS code for some closing action
-    document.querySelector("body")?.addEventListener("click",(e:any)=>{
-      if(e.target?.closest(".dropdownContainer")){
-        return
-      } 
-      else{
-        this.isDropdownOpen=false;
-        this.scrollToTop()
-      }
-    })
+    //A little jS code for some closing action, We can use this also
+
+    // document.querySelector("body")?.addEventListener("click",(e:any)=>{
+    //   if(e.target?.closest(".dropdownContainer")){
+    //     return
+    //   } 
+    //   else{
+    //     this.isDropdownOpen=false;
+    //     this.scrollToTop()
+    //   }
+    // })
     this.observer=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting) this.getMoreData()
